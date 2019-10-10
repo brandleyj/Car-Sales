@@ -1,4 +1,6 @@
 import { ADD_FEATURE } from "../Actions/index";
+import { spread } from "q";
+import { stat } from "fs";
 const initialState = {
 	additionalPrice: 0,
 	car: {
@@ -20,7 +22,15 @@ export const partsReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_FEATURE:
 			return {
-				...state
+				...state,
+				car: {
+					...state.car,
+					features: [...state.car.features, action.payload]
+				},
+				additionalPrice: state.additionalPrice + action.payload.price,
+				store: [...state.store].filter(
+					feature => feature.id !== action.payload.id && feature
+				)
 			};
 		default:
 			return state;

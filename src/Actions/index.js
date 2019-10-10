@@ -1,1 +1,1 @@
-export { ADD_FEATURE, addFeature } from "./partsAction";
+export { addFeature, ADD_FEATURE } from "./partsAction";
