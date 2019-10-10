@@ -1,6 +1,5 @@
-import { ADD_FEATURE } from "../Actions/index";
-import { spread } from "q";
-import { stat } from "fs";
+import { ADD_FEATURE, REMOVE_FEATURE } from "../Actions/index";
+
 const initialState = {
 	additionalPrice: 0,
 	car: {
@@ -23,15 +22,28 @@ export const partsReducer = (state = initialState, action) => {
 		case ADD_FEATURE:
 			return {
 				...state,
+				additionalPrice: state.additionalPrice + action.payload.price,
 				car: {
 					...state.car,
 					features: [...state.car.features, action.payload]
 				},
-				additionalPrice: state.additionalPrice + action.payload.price,
 				store: [...state.store].filter(
 					feature => feature.id !== action.payload.id && feature
 				)
 			};
+		case REMOVE_FEATURE:
+			return {
+				...state,
+				additionalPrice: state.additionalPrice - action.payload.price,
+				car: {
+					...state.car,
+					features: state.car.features.filter(
+						item => !(item.id === action.payload.id)
+					)
+				},
+				store: [...state.store, action.payload]
+			};
+
 		default:
 			return state;
 	}
